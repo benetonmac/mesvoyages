@@ -57,4 +57,9 @@ use Doctrine\Persistence\ManagerRegistry;
                 ->getResult();
             }
     }
+    
+    public function remove(Visite $visite): void{
+        $this->getEntityManager()->remove($visite);
+        $this->getEntityManager()->flush();
+    }
 }
