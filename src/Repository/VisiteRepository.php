@@ -29,9 +29,32 @@ use Doctrine\Persistence\ManagerRegistry;
      * @return Visite[]
      */
     public function findAllOrderBy($champ, $ordre): array{
-        return $this->createQueryBuilder('v')
+        return $this->createQueryBuilder('v') // v = alias de la table 
                 ->orderBy('v.'. $champ, $ordre)
                 ->getQuery()
                 ->getResult();
+    }
+    
+    /**
+     * Enregistrements dont un champ est égal a une valeur 
+     * ou tous les enregistrements si la valeur est vide
+     * @param type $champ
+     * @param type $valeur
+     * @return Visite[]
+     */
+    public function findByEqualValue($champ, $valeur) : array{
+        if($valeur==""){
+            return $this->createQueryBuilder('v') // v = alias de la table 
+                ->orderBy('v.'.$champ, 'ASC')
+                ->getQuery()
+                ->getResult();
+        }else{
+            return $this->createQueryBuilder('v') // v = alias de la table 
+                ->where('v.'.$champ.'=:valeur')
+                ->setParameter('valeur', $valeur)
+                ->orderBy('v.datecreation', 'DESC')
+                ->getQuery()
+                ->getResult();
+            }
     }
 }
