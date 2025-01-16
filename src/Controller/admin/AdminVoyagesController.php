@@ -60,4 +60,21 @@ class AdminVoyagesController extends AbstractController {
             'formvisite' => $formVisite->createView() //La vue créée à partir de l'objet $formVisite
         ]);
     }
+    
+    #[Route('/admin/ajout', name:'admin.voyage.ajout')]
+    public function ajout(Request $request): Response{
+        $visite = new Visite();
+        $formVisite = $this->createForm(VisiteType::class, $visite); //Permet de créer un objet qui va contenir les informations du formulaire
+        
+        $formVisite->handleRequest($request);
+        if($formVisite->isSubmitted() && $formVisite->isValid()){
+            $this->repository->add($visite);
+            return $this->redirectToRoute('admin.voyages');
+        }
+        
+        return $this->render("admin/admin.voyage.ajout.html.twig", [
+            'visite' => $visite,
+            'formvisite' => $formVisite->createView() //La vue créée à partir de l'objet $formVisite
+        ]);
+    }
 }
