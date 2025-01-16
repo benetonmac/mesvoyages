@@ -62,4 +62,9 @@ use Doctrine\Persistence\ManagerRegistry;
         $this->getEntityManager()->remove($visite);
         $this->getEntityManager()->flush();
     }
+    
+    public function add(Visite $visite): void{
+        $this->getEntityManager()->persist($visite);
+        $this->getEntityManager()->flush();
+    }
 }
