@@ -10,14 +10,20 @@
             {% else %}
                 <h2 class="text-danger mt-5">{{ visite.note }}/20</h2>
             {% endif %}
-            <h5 class="mt-5">t° entre {{ visite.tempmin }}° et {{ visite.tempmax }}°</h5>
-            <p class="mt-5"><strong>Environnements : </strong></p>
-            {% for environnement in environnements %}
+            <h5 class="mt-5">t° entre {{ visite.tempmin }}° et {{ visite.tempmax }}°</h5>      
+            <p class="mt-5"><strong>Environnements :</strong></p>
+            {% for environnement in visite.environnements %}
                 {{ environnement.nom }}
-            {% endfor %}
+            {% endfor %}                   
         </div>
         <div class="col">
             <!-- emplacement photo -->       
+            {% if visite.imagename %}
+                <img src="{{ app.request.getBasePath()~vich_uploader_asset(visite, 'imageFile') }}"
+                     class="card-img-top" style="width:100%;height:auto;">
+            {% else %}
+                <p>(aucune image)</p>
+            {% endif %}                        
         </div>
     </div>
     <div class="row mt-5">
