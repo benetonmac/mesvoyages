@@ -38,9 +38,9 @@ class VoyagesController extends AbstractController{
     
     #[Route('/voyages/tri/{champ}/{ordre}', name: 'voyages.sort')]
     public function sort($champ, $ordre) : Response{
-        $visite = $this->repository->findAllOrderBy($champ, $ordre);
+        $visites = $this->repository->findAllOrderBy($champ, $ordre);
         return $this -> render ("pages/voyages.html.twig",[
-            'visite' => $visite
+            'visites' => $visites
         ]);
     }
     
@@ -70,11 +70,14 @@ class VoyagesController extends AbstractController{
     
     #[Route('/voyages/recherche/{champ}', name: 'voyages.findallequal')]
     public function findAllEqual($champ, Request $request): Response{
-        $valeur = $request->get("recherche");
-        $visites = $this->repository->findByEqualValue($champ, $valeur);
-        return $this->render("pages/voyages.html.twig",[
-            'visites' => $visites
-        ]);
+        if ($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token'))){
+            $valeur = $request->get("recherche");
+            $visites = $this->repository->findByEqualValue($champ, $valeur);
+            return $this->render("pages/voyages.html.twig",[
+                'visites' => $visites
+            ]);
+        }
+        return $this->redirectToRoute("voyages");
     }
     
     #[Route('/voyages/voyage/{id}', name: 'voyages.showone')]
